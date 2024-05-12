@@ -23,29 +23,41 @@ Welcome to Foody, your digital culinary guide! Foody is a unique application tha
    cd foody
    ```
 
-2. **TODO Install required libraries** 
+2. **Set up a Virtual Environment**
+   - For Unix/macOS:
+     ```bash
+     python -m venv myenv
+     source myenv/bin/activate
+     ```
+   - For Windows:
+     ```cmd
+     python -m venv myenv
+     myenv\Scripts\activate
+     ```
+
+3. **Install required libraries**
    ```bash
    pip install -r requirements.txt
    ```
 
-3. **Set up environment variables**
+4. **Set up environment variables**
    - Create a `.env` file in the root directory.
    - Add your OpenAI API key:
      ```
      OPENAI_API_KEY='your_key_here'
      ```
-    - Create a `.streamlit` folder in the root directory.
-    - Create a `secrets.toml` file in the `.streamlit` folder.
-    - Add your OpenAI API key:
-     ```
+   - Create a `.streamlit` folder in the root directory.
+   - Create a `secrets.toml` file inside the `.streamlit` folder.
+   - Add your OpenAI API key to `secrets.toml`:
+     ```toml
      OPENAI_API_KEY='your_key_here'
      ```
 
-4. **Run the application**
+5. **Run the application**
    ```bash
    streamlit run streamlit_app.py
    ```
 
 ### Usage
-- **Upload a Menu Image**: Drag and drop your menu image in the sidebar's uploader.
+- **Upload a Menu Image**: Drag and drop your menu image into the sidebar's uploader.
 - **Interact with the Chatbot**: After uploading your menu image, ask any food-related questions in the chat. The chatbot will respond with interesting stories and facts.
