@@ -4,3 +4,4 @@ __pycache__/
 .files/
 requirements_all.txt
 foodyenv/
+myenv/

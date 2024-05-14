@@ -8,9 +8,12 @@ from langchain.prompts import ChatPromptTemplate
 from langchain_community.tools import WikipediaQueryRun
 from langchain_community.utilities import WikipediaAPIWrapper
 import cv2
-import pytesseract
 import subprocess
 import numpy as np
+from azure.ai.vision.imageanalysis import ImageAnalysisClient
+from azure.ai.vision.imageanalysis.models import VisualFeatures
+from azure.core.credentials import AzureKeyCredential
+import os
 
 image_text: str
 
@@ -104,30 +107,34 @@ def data_process(document: str) -> str:
     load_dotenv()
     llm = ChatOpenAI(model="gpt-3.5-turbo-0125", temperature=0.5)
     chain = LLMChain(llm=llm, prompt=prompt)
-
     return chain.invoke(input=document, document=document) 
 
 
-def get_tesseract_path():
-    try:
-        # Execute 'where tesseract' command to find the path
-        path = subprocess.check_output('where tesseract', shell=True).decode().strip()
-    except subprocess.CalledProcessError:
-        path = None
-    return path
-
 
 def OCR(file_like) -> str:
-    pytesseract.pytesseract.tesseract_cmd = get_tesseract_path()
+    load_dotenv()
+    key = os.environ["VISION_KEY"]
+    endpoint = os.environ["VISION_ENDPOINT"]
+
+    client = ImageAnalysisClient(
+    endpoint=endpoint,
+    credential=AzureKeyCredential(key)
+    )
+
     file_like.seek(0)
-    file_bytes = np.asarray(bytearray(file_like.read()), dtype=np.uint8)
-    img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
-    if img is None:
-        raise ValueError("The image could not be decoded. Please check the file format and ensure it's a supported image type (PNG, JPG, JPEG).")
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    threshold_img = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
-    text = pytesseract.image_to_string(threshold_img)
-    response = data_process(text)
+
+    result = client.analyze(
+        file_like,
+        visual_features=[VisualFeatures.READ],
+        gender_neutral_caption=True,
+    )
+
+    texts = []
+    if result.read is not None:
+        for line in result.read.blocks[0].lines:
+            for word in line.words:
+                texts.append(word.text)
+    response = data_process(texts)
     return response
 
 #def OCR(file_like) -> str:
@@ -145,7 +152,7 @@ def init_agent(llm: ChatOpenAI):
         Tool(
             name="getMenuItems",
             func=get_image_text,
-            description="Get items from the menu. Use whenever HumanMessage wants to get information about whats avaible on the menus.",
+            description="Get items from the menu without the price. Use whenever HumanMessage wants to get information about whats avaible on the menus.",
         ),
         Tool(
             name = "WikipediaSearch",
@@ -183,6 +190,5 @@ def main():
 
 #print(image_text)
 #image_text = OCR("./menu.png")
-#print(image_text)
 #main()
 #print(type(hub.pull("hwchase17/react-chat")))
