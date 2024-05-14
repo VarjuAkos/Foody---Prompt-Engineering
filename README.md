@@ -46,6 +46,11 @@ Welcome to Foody, your digital culinary guide! Foody is a unique application tha
      ```
      OPENAI_API_KEY='your_key_here'
      ```
+   - Add your vision endpoint key:
+    ```
+      VISION_KEY='your_key_here'
+      VISION_ENDPOINT='your_key_here'
+    ```
    - Create a `.streamlit` folder in the root directory.
    - Create a `secrets.toml` file inside the `.streamlit` folder.
    - Add your OpenAI API key to `secrets.toml`:
@@ -61,3 +66,11 @@ Welcome to Foody, your digital culinary guide! Foody is a unique application tha
 ### Usage
 - **Upload a Menu Image**: Drag and drop your menu image into the sidebar's uploader.
 - **Interact with the Chatbot**: After uploading your menu image, ask any food-related questions in the chat. The chatbot will respond with interesting stories and facts.
+
+
+### Deployed Version
+We are excited to announce that Foody is now deployed and accessible online. You can explore the full functionality of Foody without any setup by visiting the following link:
+[Deployed Foody Application](https://foody-prompt-engineering.streamlit.app/)
+
+This deployed version allows you to enjoy all the features of Foody seamlessly and engage with the culinary chatbot to discover fascinating stories about your favorite dishes.
+
