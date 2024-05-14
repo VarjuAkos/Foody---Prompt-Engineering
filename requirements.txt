@@ -12,4 +12,4 @@ langchainhub==0.1.15
 langsmith==0.1.52
 openai==1.24.0
 wikipedia==1.4.0
-azure-ai-vision-imageanalysis==4.0
+azure-ai-vision-imageanalysis==1.0.0b2
