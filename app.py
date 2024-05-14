@@ -7,9 +7,6 @@ from langchain.chains import LLMChain
 from langchain.prompts import ChatPromptTemplate
 from langchain_community.tools import WikipediaQueryRun
 from langchain_community.utilities import WikipediaAPIWrapper
-import cv2
-import subprocess
-import numpy as np
 from azure.ai.vision.imageanalysis import ImageAnalysisClient
 from azure.ai.vision.imageanalysis.models import VisualFeatures
 from azure.core.credentials import AzureKeyCredential
